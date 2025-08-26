@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55058b910d449849a95bdcb24b5698d, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: 
+  <CarSettings>k__BackingField: {fileID: 11400000, guid: 8e25b83729dae054b8b857d05379de99, type: 2}
+  <LionSettings>k__BackingField: {fileID: 11400000, guid: 1d624a6c309c9aa43ab0820e077e5c6e, type: 2}
+  <GiraffeSettings>k__BackingField: {fileID: 11400000, guid: 70c1c65cd1e2c1e448a8c5b408e17060, type: 2}
+  <PlayerSettings>k__BackingField: {fileID: 11400000, guid: 2708bfd3e0aee194d82dcc09513a8be8, type: 2}
+  <EnemySettings>k__BackingField:
+  - {fileID: 11400000, guid: f1d0e45d8a1e80f48912458c0555d149, type: 2}
+  - {fileID: 11400000, guid: 61aa20529d110cf43ac9e0a865425c71, type: 2}
+  <FactorySettings>k__BackingField: {fileID: 11400000, guid: 8868272069bcf8843820be3bd3042f9d, type: 2}

@@ -14,4 +14,11 @@ public class CameraFollow : MonoBehaviour
         _currentTween = transform.DOMove(targetPosition, _moveDuration)
             .SetEase(Ease.OutSine);
     }
+
+    public void MoveTo(Vector3 targetPosition)
+    {
+        _currentTween?.Kill();
+        _currentTween = transform.DOMove(targetPosition, _moveDuration)
+            .SetEase(Ease.OutSine);
+    }
 }

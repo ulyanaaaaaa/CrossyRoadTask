@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2efe912cc864d738ed21f0c7cbc17c0, type: 3}
+  m_Name: FactorySettings
+  m_EditorClassIdentifier: 
+  <CarFactory>k__BackingField: {fileID: 8337529905988945711, guid: e9d5003df74c9904181a94b08cbfe590, type: 3}
+  <LionFactory>k__BackingField: {fileID: 2406980095666682061, guid: af6047af1cbe02e499275fb5a549ddd3, type: 3}
+  <GiraffeFactory>k__BackingField: {fileID: 3793012361071800492, guid: 25cad4218ced0a649af1cb48c2bb74a2, type: 3}
+  <EnemyFactory>k__BackingField: {fileID: 8282650696745545849, guid: 9e66efa882b275b4d94fd1c17b0d2c38, type: 3}
