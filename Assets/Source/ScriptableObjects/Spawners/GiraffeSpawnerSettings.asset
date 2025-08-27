@@ -16,5 +16,5 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 6166393577987254168, guid: a4a11b89e30ac9b4181fbbc9e9e1e5f0, type: 3}
   <SpawnInterval>k__BackingField: 3
   <MaxActiveObjects>k__BackingField: 10
-  <SpawnPoint>k__BackingField: {x: -9.5, y: 0, z: -24}
+  <SpawnPoint>k__BackingField: {x: -9.5, y: 0, z: -15}
   <Damage>k__BackingField: 1

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d35503bde54c329ac1f88cbf4309c1, type: 3}
+  m_Name: UISettings
+  m_EditorClassIdentifier: 
+  <StartBattleZone>k__BackingField: {fileID: 1307333706927677813, guid: 4a42e7fd23f380f4ab3bf3663655fbe3, type: 3}
+  <HitButton>k__BackingField: {fileID: 3660843046244835481, guid: 10e9bd16623a34544a2ef2fd3d9e45a8, type: 3}
+  <OpenButton>k__BackingField: {fileID: 286956593363695343, guid: 96b66c25bc6884242b4224a09fdddab4, type: 3}
+  <BoxView>k__BackingField: {fileID: 2325602669558995225, guid: 1a4a5b6c81bb0684dbd00e4b2fc3fe72, type: 3}
+  <WinPanel>k__BackingField: {fileID: 276700324827806607, guid: 59d0398a4effcf5429b95850302f5b59, type: 3}

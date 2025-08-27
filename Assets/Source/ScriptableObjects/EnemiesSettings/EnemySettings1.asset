@@ -17,4 +17,4 @@ MonoBehaviour:
   <Damage>k__BackingField: 10
   <AttackInterval>k__BackingField: 3
   <MoveSpeed>k__BackingField: 2
-  <SpawnPoint>k__BackingField: {x: -17, y: 0, z: -10}
+  <SpawnPoint>k__BackingField: {x: -15, y: 0, z: 2}

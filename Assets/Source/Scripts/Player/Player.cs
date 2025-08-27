@@ -99,9 +99,6 @@ public class Player : MonoBehaviour, IPerson
 
     private void Hit()
     {
-        if (_isAttacking)
-            return;
-
         _isAttacking = true;
 
         transform

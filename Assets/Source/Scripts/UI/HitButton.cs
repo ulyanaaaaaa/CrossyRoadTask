@@ -51,4 +51,14 @@ public class HitButton : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.OutBack);
     }
+
+    public void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
 }

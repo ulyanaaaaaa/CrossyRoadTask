@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
+    public event Action<Enemy> OnDeath;
+    
     private int _maxHealth;
     private int _currentHealth;
     private int _damage;
@@ -80,6 +84,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        OnDeath?.Invoke(this);
         _idleTween?.Kill(); 
         Destroy(gameObject);
     }

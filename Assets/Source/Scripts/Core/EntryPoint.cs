@@ -1,23 +1,63 @@
+// EntryPoint.cs
 using System;
 using UnityEngine;
 using Zenject;
 
 public class EntryPoint : MonoBehaviour
 {
-    [Inject] private GameSettings _gameSettings;
-    [Inject] private StartBattleZone _startBattleZone;
-    [Inject] private PlayerHealth _playerHealth;
-    [Inject] private HitButton _hitButton;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private GameObject _parentZone;
 
-    private Action _onPlayerEnteredHandler;
+    private GameSettings _gameSettings;
+    private StartBattleZone _startBattleZone;
+    private PlayerHealth _playerHealth;
+    private HitButton _hitButton;
+    private EnemyController _enemyController;
+    private OpenButton _openButton;
+    private BoxView _boxView;
+    private WinPanel _winPanel;
+
+    private Box _box;
     private bool _enemiesSpawned;
-    
+    private Action _onPlayerEnteredHandler;
+
+    [Inject]
+    public void Init(GameSettings gameSettings,
+        PlayerHealth playerHealth,
+        EnemyController enemyController,
+        HitButton hitButton,
+        OpenButton openButton,
+        BoxView boxView,
+        WinPanel winPanel)
+    {
+        _gameSettings = gameSettings;
+        _playerHealth = playerHealth;
+        _enemyController = enemyController;
+
+        _hitButton = hitButton;
+        _openButton = openButton;
+        _boxView = boxView;
+        _winPanel = winPanel;
+    }
+
+    private void Awake()
+    {
+        _startBattleZone = Instantiate(_gameSettings.UISettings.StartBattleZone, _parentZone.transform);
+
+        _hitButton.Close();
+        _winPanel.Close();
+        _openButton.Hide();
+    }
+
     private void OnEnable()
     {
+        _enemiesSpawned = false;
         _onPlayerEnteredHandler = ActivateEnemies;
-        _playerHealth.OnDeath += ResetEnemySpawnFlag;
+
+        _playerHealth.OnDeath += Reset;
+        _enemyController.OnAllEnemiesDefeated += CreateBox;
+
         _startBattleZone.OnPlayerEntered += _onPlayerEnteredHandler;
-        _hitButton.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -26,7 +66,7 @@ public class EntryPoint : MonoBehaviour
         CreateSpawner(_gameSettings.LionSettings, _gameSettings.FactorySettings.LionFactory);
         CreateSpawner(_gameSettings.GiraffeSettings, _gameSettings.FactorySettings.GiraffeFactory);
     }
-    
+
     private void CreateSpawner(SpawnerSettings settings, Factory factory)
     {
         GameObject poolObj = new GameObject($"{settings.Prefab.name} Pool");
@@ -36,15 +76,9 @@ public class EntryPoint : MonoBehaviour
 
         switch (factory)
         {
-            case CarFactory carFactory:
-                carFactory.Setup(pool);
-                break;
-            case LionFactory lionFactory:
-                lionFactory.Setup(pool);
-                break;
-            case GiraffeFactory giraffeFactory:
-                giraffeFactory.Setup(pool);
-                break;
+            case CarFactory carFactory: carFactory.Setup(pool); break;
+            case LionFactory lionFactory: lionFactory.Setup(pool); break;
+            case GiraffeFactory giraffeFactory: giraffeFactory.Setup(pool); break;
         }
 
         GameObject spawnerObj = new GameObject($"{settings.Prefab.name} Spawner");
@@ -61,30 +95,44 @@ public class EntryPoint : MonoBehaviour
 
     private void ActivateEnemies()
     {
-        _hitButton.gameObject.SetActive(true);
-        
         if (_enemiesSpawned) return;
 
         _enemiesSpawned = true;
-        
+        _hitButton.Open();
+
         foreach (var settings in _gameSettings.EnemySettings)
         {
-            Instantiate(settings.EnemyPrefab, settings.SpawnPoint, Quaternion.identity)
+            var enemy = Instantiate(settings.EnemyPrefab, settings.SpawnPoint, Quaternion.identity)
                 .InitializeEnemy(_playerHealth, settings);
+
+            _enemyController.RegisterEnemy(enemy);
         }
     }
-    
-    private void ResetEnemySpawnFlag()
+
+    private void CreateBox()
     {
-        _hitButton.gameObject.SetActive(false);
+        if (!_enemiesSpawned) 
+            return;
+        
+        _box = Instantiate(_gameSettings.BoxSettings.BoxPrefab, _gameSettings.BoxSettings.SpawnPoint, Quaternion.identity)
+            .Setup(_openButton);
+
+        _hitButton.Close();
+        _openButton.Open();
+    }
+
+    private void Reset()
+    {
+        _hitButton.Close();
         _enemiesSpawned = false;
+
+        if (_box) Destroy(_box.gameObject);
     }
 
     private void OnDisable()
     {
-        _hitButton.gameObject.SetActive(false);
-        
-        if (_onPlayerEnteredHandler != null)
-            _startBattleZone.OnPlayerEntered -= _onPlayerEnteredHandler;
+        _hitButton?.Close();
+        _startBattleZone.OnPlayerEntered -= _onPlayerEnteredHandler;
+        _enemyController.OnAllEnemiesDefeated -= CreateBox;
     }
 }

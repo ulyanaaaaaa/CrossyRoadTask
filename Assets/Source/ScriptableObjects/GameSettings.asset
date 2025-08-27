@@ -19,4 +19,6 @@ MonoBehaviour:
   <EnemySettings>k__BackingField:
   - {fileID: 11400000, guid: f1d0e45d8a1e80f48912458c0555d149, type: 2}
   - {fileID: 11400000, guid: 61aa20529d110cf43ac9e0a865425c71, type: 2}
+  <BoxSettings>k__BackingField: {fileID: 11400000, guid: 13f10615db2c6fd4b9e846b7b5961945, type: 2}
+  <UISettings>k__BackingField: {fileID: 11400000, guid: 46c342b160201e04a8492f0cdd02eb77, type: 2}
   <FactorySettings>k__BackingField: {fileID: 11400000, guid: 8868272069bcf8843820be3bd3042f9d, type: 2}

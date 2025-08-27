@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Game/Game Settings")]
 public class GameSettings : ScriptableObject
@@ -16,7 +17,13 @@ public class GameSettings : ScriptableObject
     [field: SerializeField] public PlayerSettings PlayerSettings { get; private set; }
     
     [Header("Enemy Settings")]
-    [field: SerializeField] public EnemySettings[] EnemySettings { get; private set; } 
+    [field: SerializeField] public EnemySettings[] EnemySettings { get; private set; }
+    
+    [Header("Box Settings")] 
+    [field: SerializeField] public BoxSettings BoxSettings { get; private set; } 
+    
+    [Header("UI Settings")]
+    [field: SerializeField] public UISettings UISettings { get; private set; } 
     
     [Header("Factories")]
     [field: SerializeField] public FactorySettings FactorySettings { get; private set; }
