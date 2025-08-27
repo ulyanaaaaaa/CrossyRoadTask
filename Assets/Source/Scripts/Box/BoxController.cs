@@ -1,6 +1,3 @@
-using UnityEngine;
-using Zenject;
-
 public class BoxController
 {
     private BoxView _boxView;
@@ -14,7 +11,5 @@ public class BoxController
     {
         _boxView.Open();
     }
-
-    
 }
 

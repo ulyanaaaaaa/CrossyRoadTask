@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: BoxSettings
   m_EditorClassIdentifier: 
   <BoxPrefab>k__BackingField: {fileID: 8754438721918719468, guid: ad632fe43ab57974f805b7b0ee58aae5, type: 3}
-  <SpawnPoint>k__BackingField: {x: -15, y: 0, z: 0}
+  <SpawnPoint>k__BackingField: {x: -20, y: 0, z: 0}
   <PossibleColors>k__BackingField:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.8835707, b: 0, a: 1}
   - {r: 0.23358655, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0.19230795, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0.84789944, a: 1}
+  - {r: 0.5259428, g: 0, b: 1, a: 1}
   <RequiredKeys>k__BackingField: 3
   <GridSize>k__BackingField: 6

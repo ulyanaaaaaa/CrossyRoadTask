@@ -4,7 +4,7 @@ public class PooledObject : MonoBehaviour
 {
     public ObjectPool Pool { get; set; }
     
-    public void Release()
+    protected void Release()
     {
         Pool.ReturnToPool(this);
     }

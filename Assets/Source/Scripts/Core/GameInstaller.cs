@@ -1,4 +1,3 @@
-// GameInstaller.cs
 using UnityEngine;
 using Zenject;
 
@@ -15,7 +14,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<SceneLoader>().AsSingle();
         Container.Bind<BoxController>().AsSingle();
 
-
         Container.Bind<PlayerHealth>()
             .FromInstance(new PlayerHealth(_gameSettings.PlayerSettings.MaxHealth))
             .AsSingle();
@@ -23,7 +21,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<PlayerHit>()
             .FromInstance(new PlayerHit(_gameSettings.PlayerSettings.Damage))
             .AsSingle();
-        
+
         Container.Bind<BoxSettings>()
             .FromInstance(_gameSettings.BoxSettings)
             .AsSingle();
@@ -31,33 +29,21 @@ public class GameInstaller : MonoInstaller
         Container.Bind<HitButton>()
             .FromComponentInNewPrefab(_gameSettings.UISettings.HitButton)
             .AsSingle()
-            .OnInstantiated<HitButton>((ctx, btn) =>
-            {
-                btn.transform.SetParent(_canvas.transform, false);
-            });
+            .OnInstantiated<HitButton>((ctx, btn) => { btn.transform.SetParent(_canvas.transform, false); });
 
         Container.Bind<OpenButton>()
             .FromComponentInNewPrefab(_gameSettings.UISettings.OpenButton)
             .AsSingle()
-            .OnInstantiated<OpenButton>((ctx, btn) =>
-            {
-                btn.transform.SetParent(_canvas.transform, false);
-            });
+            .OnInstantiated<OpenButton>((ctx, btn) => { btn.transform.SetParent(_canvas.transform, false); });
 
         Container.Bind<BoxView>()
             .FromComponentInNewPrefab(_gameSettings.UISettings.BoxView)
             .AsSingle()
-            .OnInstantiated<BoxView>((ctx, btn) =>
-            {
-                btn.transform.SetParent(_canvas.transform, false);
-            });
+            .OnInstantiated<BoxView>((ctx, btn) => { btn.transform.SetParent(_canvas.transform, false); });
 
         Container.Bind<WinPanel>()
             .FromComponentInNewPrefab(_gameSettings.UISettings.WinPanel)
             .AsSingle()
-            .OnInstantiated<WinPanel>((ctx, btn) =>
-            {
-                btn.transform.SetParent(_canvas.transform, false);
-            });
+            .OnInstantiated<WinPanel>((ctx, btn) => { btn.transform.SetParent(_canvas.transform, false); });
     }
 }

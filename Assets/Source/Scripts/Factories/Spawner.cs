@@ -25,15 +25,6 @@ public class Spawner : MonoBehaviour
             _spawnRoutine = StartCoroutine(SpawnRoutine());
     }
 
-    public void StopSpawning()
-    {
-        if (_spawnRoutine != null)
-        {
-            StopCoroutine(_spawnRoutine);
-            _spawnRoutine = null;
-        }
-    }
-
     private IEnumerator SpawnRoutine()
     {
         while (true)

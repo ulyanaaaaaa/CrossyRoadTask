@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IPerson
     private PlayerHealth _playerHealth;
     private PlayerHit _playerHit;
     private IInput _input;
+    private SceneLoader _sceneLoader;
     private bool _isRun;
     private Vector3 _startPosition;
     private Vector3 _cameraStartPosition;
@@ -17,11 +18,12 @@ public class Player : MonoBehaviour, IPerson
     private bool _isAttacking;
     
     [Inject]
-    public void Init(IInput input, PlayerHealth playerHealth, PlayerHit playerHit)
+    public void Init(IInput input, PlayerHealth playerHealth, PlayerHit playerHit, SceneLoader sceneLoader)
     {
         _input = input;
         _playerHit = playerHit;
         _playerHealth = playerHealth;
+        _sceneLoader =  sceneLoader;
     }
 
     private void OnEnable()
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour, IPerson
         _input.OnLeft += OnLeft;
         _input.OnRight += OnRight;
         _input.OnRun += OnRun;
+        _sceneLoader.OnReload += HandleDeath;
     }
 
     private void Start()
@@ -140,6 +143,8 @@ public class Player : MonoBehaviour, IPerson
         _input.OnRight -= OnRight;
         _input.OnRun -= OnRun;
         _playerHealth.OnDeath -= HandleDeath;
-        _playerHit.OnHit += Hit;
+        _playerHit.OnHit -= Hit;
+        _sceneLoader.OnReload -= HandleDeath;
+
     }
 }

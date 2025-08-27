@@ -9,10 +9,6 @@ public class StartBattleZone : MonoBehaviour
     {
         if (other.GetComponent<Player>())
         {
-            if (OnPlayerEntered != null)
-                Debug.Log("OnPlayerEntered has subscribers");
-            
-            Debug.Log("OnTriggerEnter");
             OnPlayerEntered?.Invoke();
         }
     }

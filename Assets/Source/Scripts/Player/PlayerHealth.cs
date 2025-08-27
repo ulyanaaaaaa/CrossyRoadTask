@@ -29,7 +29,6 @@ public class PlayerHealth
         if (_currentHealth > _maxHealth)
             _currentHealth = _maxHealth;
     }
-
-    public int CurrentHealth => _currentHealth;
+    
     public int MaxHealth => _maxHealth;
 }

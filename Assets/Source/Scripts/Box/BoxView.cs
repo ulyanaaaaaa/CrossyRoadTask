@@ -27,6 +27,8 @@ public class BoxView : MonoBehaviour
 
     private void OnEnable()
     {
+        transform.SetAsLastSibling();
+
         _targetColor = _boxSettings.PossibleColors[
             Random.Range(0, _boxSettings.PossibleColors.Length)
         ];

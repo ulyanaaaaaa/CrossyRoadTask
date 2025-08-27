@@ -57,7 +57,7 @@ public class HitButton : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Close()
+    public void Hide()
     {
         gameObject.SetActive(false);
     }

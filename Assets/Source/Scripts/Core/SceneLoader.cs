@@ -1,9 +1,11 @@
-using UnityEngine.SceneManagement;
+using System;
 
 public class SceneLoader 
 {
+    public event Action OnReload;
+
     public void ReloadScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        OnReload?.Invoke();
     }
 }

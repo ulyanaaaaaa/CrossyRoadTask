@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LionSpawnerSettings
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 5
-  <Prefab>k__BackingField: {fileID: 3940434174257414273, guid: 1892eb957fec95b4cb6e7936fa0598da, type: 3}
+  <Prefab>k__BackingField: {fileID: 3940434174257414273, guid: cdeefd5d3e37a1f41929aa1e4fa73a25, type: 3}
   <SpawnInterval>k__BackingField: 4
   <MaxActiveObjects>k__BackingField: 10
   <SpawnPoint>k__BackingField: {x: -5.54, y: 0, z: -15}

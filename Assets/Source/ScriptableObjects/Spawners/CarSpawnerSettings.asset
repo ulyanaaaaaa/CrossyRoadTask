@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CarSpawnerSettings
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 10
-  <Prefab>k__BackingField: {fileID: 7258053117739399661, guid: 26acf6580b3253b4c8ac8eae9c73f3d7, type: 3}
+  <Prefab>k__BackingField: {fileID: 7258053117739399661, guid: 2d904de92be5b4a48a889370323820e4, type: 3}
   <SpawnInterval>k__BackingField: 2
   <MaxActiveObjects>k__BackingField: 5
   <SpawnPoint>k__BackingField: {x: -1.68, y: 0, z: -15}

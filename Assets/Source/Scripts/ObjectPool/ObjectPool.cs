@@ -12,22 +12,16 @@ public class ObjectPool : MonoBehaviour
         _objectToPool = objectToPool;
     }
 
-    private Stack<PooledObject> stack;
+    private Stack<PooledObject> _stack;
 
     private void Awake()
     {
         SetupPool();
     }
     
-    public PooledObject[] GetAllObjects()
-    {
-        return stack.ToArray(); 
-    }
-
-    
     private void SetupPool()
     {
-        stack = new Stack<PooledObject>();
+        _stack = new Stack<PooledObject>();
 
         for (int i = 0; i < _initPoolSize; i++)
         {
@@ -40,16 +34,16 @@ public class ObjectPool : MonoBehaviour
         var instance = Instantiate(_objectToPool, transform);
         instance.Pool = this;
         instance.gameObject.SetActive(false);
-        stack.Push(instance);
+        _stack.Push(instance);
         return instance;
     }
     
     public PooledObject GetPooledObject(Vector3 position, Quaternion rotation)
     {
-        if (stack.Count == 0)
+        if (_stack.Count == 0)
             CreateNewInstance();
 
-        var obj = stack.Pop();
+        var obj = _stack.Pop();
         obj.transform.SetPositionAndRotation(position, rotation);
         obj.gameObject.SetActive(true);
         return obj;
@@ -58,6 +52,6 @@ public class ObjectPool : MonoBehaviour
     public void ReturnToPool(PooledObject pooledObject)
     {
         pooledObject.gameObject.SetActive(false);
-        stack.Push(pooledObject);
+        _stack.Push(pooledObject);
     }
 }

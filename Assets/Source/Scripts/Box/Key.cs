@@ -41,6 +41,7 @@ public class Key : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandl
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        ReturnToStart();
         _canvasGroup.blocksRaycasts = true;
     }
 

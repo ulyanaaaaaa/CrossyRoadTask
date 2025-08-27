@@ -1,4 +1,3 @@
-// EntryPoint.cs
 using System;
 using UnityEngine;
 using Zenject;
@@ -16,6 +15,7 @@ public class EntryPoint : MonoBehaviour
     private OpenButton _openButton;
     private BoxView _boxView;
     private WinPanel _winPanel;
+    private SceneLoader _sceneLoader;
 
     private Box _box;
     private bool _enemiesSpawned;
@@ -28,7 +28,8 @@ public class EntryPoint : MonoBehaviour
         HitButton hitButton,
         OpenButton openButton,
         BoxView boxView,
-        WinPanel winPanel)
+        WinPanel winPanel,
+        SceneLoader sceneLoader)
     {
         _gameSettings = gameSettings;
         _playerHealth = playerHealth;
@@ -38,14 +39,15 @@ public class EntryPoint : MonoBehaviour
         _openButton = openButton;
         _boxView = boxView;
         _winPanel = winPanel;
+        _sceneLoader = sceneLoader;
     }
 
     private void Awake()
     {
         _startBattleZone = Instantiate(_gameSettings.UISettings.StartBattleZone, _parentZone.transform);
 
-        _hitButton.Close();
-        _winPanel.Close();
+        _hitButton?.Hide();
+        _winPanel.Hide();
         _openButton.Hide();
     }
 
@@ -56,6 +58,7 @@ public class EntryPoint : MonoBehaviour
 
         _playerHealth.OnDeath += Reset;
         _enemyController.OnAllEnemiesDefeated += CreateBox;
+        _sceneLoader.OnReload += Reset;
 
         _startBattleZone.OnPlayerEntered += _onPlayerEnteredHandler;
     }
@@ -95,14 +98,15 @@ public class EntryPoint : MonoBehaviour
 
     private void ActivateEnemies()
     {
-        if (_enemiesSpawned) return;
+        if (_enemiesSpawned) 
+            return;
 
         _enemiesSpawned = true;
         _hitButton.Open();
 
         foreach (var settings in _gameSettings.EnemySettings)
         {
-            var enemy = Instantiate(settings.EnemyPrefab, settings.SpawnPoint, Quaternion.identity)
+            var enemy = Instantiate(settings.EnemyPrefab, settings.SpawnPoint, Quaternion.Euler(0,90,0))
                 .InitializeEnemy(_playerHealth, settings);
 
             _enemyController.RegisterEnemy(enemy);
@@ -117,21 +121,24 @@ public class EntryPoint : MonoBehaviour
         _box = Instantiate(_gameSettings.BoxSettings.BoxPrefab, _gameSettings.BoxSettings.SpawnPoint, Quaternion.identity)
             .Setup(_openButton);
 
-        _hitButton.Close();
-        _openButton.Open();
+        _hitButton?.Hide();
     }
 
     private void Reset()
     {
-        _hitButton.Close();
+        _hitButton?.Hide();
+        _winPanel?.Hide();
+        _openButton?.Hide();
+        
         _enemiesSpawned = false;
 
-        if (_box) Destroy(_box.gameObject);
+        if (_box) 
+            Destroy(_box.gameObject);
     }
 
     private void OnDisable()
     {
-        _hitButton?.Close();
+        _hitButton?.Hide();
         _startBattleZone.OnPlayerEntered -= _onPlayerEnteredHandler;
         _enemyController.OnAllEnemiesDefeated -= CreateBox;
     }

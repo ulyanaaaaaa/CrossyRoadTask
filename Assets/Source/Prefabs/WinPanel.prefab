@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 2326765690594383444}
   - component: {fileID: 4934967531279222393}
   - component: {fileID: 5002425281319699141}
+  - component: {fileID: 6548862651227967692}
   m_Layer: 5
   m_Name: WinText (TMP)
   m_TagString: Untagged
@@ -271,6 +272,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6548862651227967692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6935373163369661407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b177a8061ba69dd4097cdab43a322fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scaleUp: 1.2
+  _duration: 0.5
 --- !u!1 &7474998879599231636
 GameObject:
   m_ObjectHideFlags: 0
