@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e9bda349c94f28a573c00f0e5eafcc, type: 3}
   m_Name: GiraffeSpawnerSettings
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 20
+  <Speed>k__BackingField: 15
   <Prefab>k__BackingField: {fileID: 6166393577987254168, guid: a4a11b89e30ac9b4181fbbc9e9e1e5f0, type: 3}
-  <SpawnInterval>k__BackingField: 1
+  <SpawnInterval>k__BackingField: 3
   <MaxActiveObjects>k__BackingField: 10
   <SpawnPoint>k__BackingField: {x: -9.5, y: 0, z: -24}
   <Damage>k__BackingField: 1

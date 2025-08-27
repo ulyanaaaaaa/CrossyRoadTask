@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9577d7c956cc4372b845a547e135b4ae, type: 3}
   m_Name: EnemySettings1
   m_EditorClassIdentifier: 
-  <EnemyPrefab>k__BackingField: {fileID: 4609447342976892968, guid: 3d015731164e14046aafee0c6f70566d, type: 3}
-  <MaxHealth>k__BackingField: 10
-  <Damage>k__BackingField: 1
-  <AttackInterval>k__BackingField: 1
+  <EnemyPrefab>k__BackingField: {fileID: 5051550607728979704, guid: 3d015731164e14046aafee0c6f70566d, type: 3}
+  <MaxHealth>k__BackingField: 1
+  <Damage>k__BackingField: 10
+  <AttackInterval>k__BackingField: 3
   <MoveSpeed>k__BackingField: 2
+  <SpawnPoint>k__BackingField: {x: -17, y: 0, z: -10}

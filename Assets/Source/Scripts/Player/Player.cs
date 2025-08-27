@@ -3,28 +3,31 @@ using UnityEngine;
 using DG.Tweening;
 using Zenject;
 
-[RequireComponent(typeof(Animator))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPerson
 {
     [SerializeField] private float _secondsDelay;
     private CameraFollow _cameraFollow;
     private PlayerHealth _playerHealth;
+    private PlayerHit _playerHit;
     private IInput _input;
     private bool _isRun;
     private Vector3 _startPosition;
     private Vector3 _cameraStartPosition;
-
-
+    private int _rotationDirection;
+    private bool _isAttacking;
+    
     [Inject]
-    public void Init(IInput input, PlayerHealth playerHealth)
+    public void Init(IInput input, PlayerHealth playerHealth, PlayerHit playerHit)
     {
         _input = input;
+        _playerHit = playerHit;
         _playerHealth = playerHealth;
-        _playerHealth.OnDeath += HandleDeath;
     }
 
     private void OnEnable()
     {
+        _playerHealth.OnDeath += HandleDeath;
+        _playerHit.OnHit += Hit;
         _input.OnBack += OnBack;
         _input.OnLeft += OnLeft;
         _input.OnRight += OnRight;
@@ -33,6 +36,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _rotationDirection = 1;
+        
         _cameraFollow = Camera.main?.GetComponent<CameraFollow>();
         _startPosition = transform.position;
         if (_cameraFollow != null)
@@ -92,6 +97,23 @@ public class Player : MonoBehaviour
         StartCoroutine(Move(new Vector3(1, 0, 0)));
     }
 
+    private void Hit()
+    {
+        if (_isAttacking)
+            return;
+
+        _isAttacking = true;
+
+        transform
+            .DORotate(new Vector3(0, _rotationDirection * 360, 0), 0.7f, RotateMode.FastBeyond360)
+            .SetRelative()
+            .SetEase(Ease.OutBack)
+            .OnComplete(() => _isAttacking = false);
+
+        _rotationDirection *= -1;
+    }
+
+
     private IEnumerator Move(Vector3 difference)
     {
         if (difference == Vector3.zero) yield break;
@@ -100,29 +122,27 @@ public class Player : MonoBehaviour
 
         _cameraFollow.Follow(difference);
         transform.rotation = Quaternion.LookRotation(difference, Vector3.up);
-        GetComponent<Animator>().SetTrigger("IsJump");
         transform.DOJump(transform.position + difference, 1f, 1, 0.2f);
 
         yield return new WaitForSeconds(_secondsDelay);
         _isRun = false;
     }
-
-    private void OnTriggerEnter(Collider other)
+    
+    private void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<StartBattleZone>())
+        if (_isAttacking && other.TryGetComponent(out Enemy enemy))
         {
-            
+            _playerHit.HitEnemy(enemy);
         }
     }
-
+    
     private void OnDisable()
     {
         _input.OnBack -= OnBack;
         _input.OnLeft -= OnLeft;
         _input.OnRight -= OnRight;
         _input.OnRun -= OnRun;
-
-        if (_playerHealth != null)
-            _playerHealth.OnDeath -= HandleDeath;
+        _playerHealth.OnDeath -= HandleDeath;
+        _playerHit.OnHit += Hit;
     }
 }

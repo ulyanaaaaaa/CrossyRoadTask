@@ -1,41 +1,101 @@
+using System.Collections;
 using UnityEngine;
+using DG.Tweening;
+using Zenject;
 
-public class Enemy : MonoBehaviour, IEnemy, IProduct
+public class Enemy : MonoBehaviour
 {
-    private EnemySettings _settings;
+    private int _maxHealth;
     private int _currentHealth;
+    private int _damage;
+    private float _attackInterval;
+    private PlayerHealth _playerHealth;
+    private bool _isAttacking;
+    private Coroutine _attackCoroutine;
 
-    public bool IsDead => _currentHealth <= 0;
+    private Vector3 _startPosition;
+    private Tween _idleTween;
 
-    public void Setup(EnemySettings settings)
+    public Enemy InitializeEnemy(PlayerHealth playerHealth, EnemySettings settings)
     {
-        _settings = settings;
-        _currentHealth = _settings.MaxHealth;
-        // Можно сразу настроить скорость движения и другие параметры
+        _playerHealth = playerHealth;
+        _playerHealth.OnDeath += Die;
+
+        _maxHealth = settings.MaxHealth;
+        _currentHealth = _maxHealth;
+        _damage = settings.Damage;
+        _attackInterval = settings.AttackInterval;
+
+        return this;
+    }
+
+    private void OnEnable()
+    {
+        _currentHealth = _maxHealth;
+        _startPosition = transform.position;
+
+        _attackCoroutine = StartCoroutine(AttackRoutine());
+
+        StartIdleAnimation();
+    }
+
+    private void StartIdleAnimation()
+    {
+        _idleTween = transform
+            .DOMoveX(_startPosition.x + Random.Range(-0.8f, 0.8f), 1.3f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
+
+        transform
+            .DOMoveZ(_startPosition.z + Random.Range(-0.8f, 0.8f), 1.2f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_attackInterval);
+            Attack();
+        }
+    }
+
+    private void Attack()
+    {
+        if (_isAttacking) return;
+        _isAttacking = true;
+
+        transform.DORotate(new Vector3(0, 360, 0), 0.5f, RotateMode.FastBeyond360)
+            .SetRelative()
+            .OnComplete(() => _isAttacking = false);
     }
 
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        if (_currentHealth <= 0) Die();
+        if (_currentHealth <= 0)
+            Die();
     }
 
     private void Die()
     {
-        gameObject.SetActive(false);
-        // Добавить анимацию/эффекты
+        _idleTween?.Kill(); 
+        Destroy(gameObject);
     }
 
-    // Пример атаки игрока
-    public void AttackPlayer(Player player)
+    private void OnTriggerStay(Collider other)
     {
-        if(player != null)
-            player.TakeDamage(_settings.Damage);
+        if (_isAttacking && other.TryGetComponent(out Player player))
+        {
+            player.TakeDamage(_damage);
+        }
     }
 
-    public IProduct Initialize(float speed = 0, int damage = 0)
+    private void OnDisable()
     {
-        // В этом случае инициализация через EnemySettings
-        return this;
+        StopCoroutine(_attackCoroutine);
+        _playerHealth.OnDeath -= Die;
+        _idleTween?.Kill();
     }
 }

@@ -1,19 +1,32 @@
+using System;
 using UnityEngine;
 using Zenject;
 
 public class EntryPoint : MonoBehaviour
 {
     [Inject] private GameSettings _gameSettings;
+    [Inject] private StartBattleZone _startBattleZone;
+    [Inject] private PlayerHealth _playerHealth;
+    [Inject] private HitButton _hitButton;
+
+    private Action _onPlayerEnteredHandler;
+    private bool _enemiesSpawned;
+    
+    private void OnEnable()
+    {
+        _onPlayerEnteredHandler = ActivateEnemies;
+        _playerHealth.OnDeath += ResetEnemySpawnFlag;
+        _startBattleZone.OnPlayerEntered += _onPlayerEnteredHandler;
+        _hitButton.gameObject.SetActive(false);
+    }
 
     private void Start()
     {
         CreateSpawner(_gameSettings.CarSettings, _gameSettings.FactorySettings.CarFactory);
         CreateSpawner(_gameSettings.LionSettings, _gameSettings.FactorySettings.LionFactory);
         CreateSpawner(_gameSettings.GiraffeSettings, _gameSettings.FactorySettings.GiraffeFactory);
-
-        SpawnEnemiesAtFinish(_gameSettings.FactorySettings.EnemyFactory, new Vector3(0f, 0f, 0f));
     }
-
+    
     private void CreateSpawner(SpawnerSettings settings, Factory factory)
     {
         GameObject poolObj = new GameObject($"{settings.Prefab.name} Pool");
@@ -36,34 +49,42 @@ public class EntryPoint : MonoBehaviour
 
         GameObject spawnerObj = new GameObject($"{settings.Prefab.name} Spawner");
         spawnerObj.transform.parent = transform;
-        Spawner spawner = spawnerObj.AddComponent<Spawner>();
-        
+        var spawner = spawnerObj.AddComponent<Spawner>();
+
         GameObject spawnPointObj = new GameObject($"{settings.Prefab.name} SpawnPoint");
         spawnPointObj.transform.position = settings.SpawnPoint;
         spawnPointObj.transform.parent = spawnerObj.transform;
 
         spawner.Setup(settings.Speed, factory, settings.SpawnInterval, spawnPointObj.transform, settings.Damage);
+        spawner.StartSpawning();
     }
 
-    private void SpawnEnemiesAtFinish(EnemyFactory factory, Vector3 spawnPosition)
+    private void ActivateEnemies()
     {
-        for (int i = 0; i < _gameSettings.EnemySettings.Length; i++)
+        _hitButton.gameObject.SetActive(true);
+        
+        if (_enemiesSpawned) return;
+
+        _enemiesSpawned = true;
+        
+        foreach (var settings in _gameSettings.EnemySettings)
         {
-            EnemySettings settings = _gameSettings.EnemySettings[i];
-
-            GameObject poolObj = new GameObject($"{settings.EnemyPrefab.name} Pool");
-            poolObj.transform.parent = transform;
-            ObjectPool pool = poolObj.AddComponent<ObjectPool>();
-            pool.Setup(_gameSettings.EnemySettings.Length, settings.EnemyPrefab.GetComponent<PooledObject>());
-
-            factory.Setup(pool, settings);
-
-            for (int j = 0; j < _gameSettings.EnemySettings.Length; j++)
-            {
-                Vector3 offset = new Vector3(j * 1.5f, 0f, i * 2f); 
-                factory.Create(spawnPosition + offset);
-            }
+            Instantiate(settings.EnemyPrefab, settings.SpawnPoint, Quaternion.identity)
+                .InitializeEnemy(_playerHealth, settings);
         }
     }
+    
+    private void ResetEnemySpawnFlag()
+    {
+        _hitButton.gameObject.SetActive(false);
+        _enemiesSpawned = false;
+    }
 
+    private void OnDisable()
+    {
+        _hitButton.gameObject.SetActive(false);
+        
+        if (_onPlayerEnteredHandler != null)
+            _startBattleZone.OnPlayerEntered -= _onPlayerEnteredHandler;
+    }
 }

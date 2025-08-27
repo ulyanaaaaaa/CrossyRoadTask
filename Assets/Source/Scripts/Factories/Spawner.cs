@@ -17,8 +17,6 @@ public class Spawner : MonoBehaviour
         _spawnInterval = spawnInterval;
         _spawnPoint = spawnPoint;
         _damage = damage;
-        
-        StartSpawning();
     }
     
     public void StartSpawning()

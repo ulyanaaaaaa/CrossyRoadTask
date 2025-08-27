@@ -19,6 +19,12 @@ public class ObjectPool : MonoBehaviour
         SetupPool();
     }
     
+    public PooledObject[] GetAllObjects()
+    {
+        return stack.ToArray(); 
+    }
+
+    
     private void SetupPool()
     {
         stack = new Stack<PooledObject>();
